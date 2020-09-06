@@ -19,7 +19,7 @@ def add_question():
 
 
 @app.route("/add-question", methods=["POST"])
-def edit_question_post():
+def add_question_post():
     return redirect(url_for("display_question"))
 
 
@@ -44,7 +44,7 @@ def add_answer(question_id):
 
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
-def edit_question_post(question_id):
+def edit_answer_post(answer_id):
     return redirect(url_for("display_question"))
 
 
@@ -59,17 +59,17 @@ def question_vote_up(question_id):
 
 
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
-def question_vote_up(question_id):
+def question_vote_down(question_id):
     return redirect(url_for("display_question"))
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
-def question_vote_up(answer_id):
+def answer_vote_up(answer_id):
     return redirect(url_for("display_question"))
 
 
 @app.route("/answer/<answer_id>/vote_down", methods=["POST"])
-def question_vote_up(answer_id):
+def answer_vote_down(answer_id):
     return redirect(url_for("display_question"))
 
 
