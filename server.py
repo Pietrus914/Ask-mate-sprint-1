@@ -12,8 +12,9 @@ def main_page():
 @app.route("/question/<question_id>")
 def display_question(question_id):
     question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"),question_id)
-    answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"),question_id)
-    return render_template("question.html", question = question, answers = answers)
+    answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
+    answers_headers = ["Votes' number", "Answer", "Submission time"]
+    return render_template("question.html", question = question, answers = answers, answers_headers = answers_headers)
 
 
 @app.route("/add-question")
