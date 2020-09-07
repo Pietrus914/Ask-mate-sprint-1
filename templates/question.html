@@ -5,23 +5,45 @@
     <title>Question</title>
 </head>
 <body>
-    <h1>QUESTION:<br>{{ question.title }}</h1>
+    <h2>QUESTION: {{ question.title }}</h2>
 
-    <p>
-        {{ question.message }}
-    </p>
+    <h3>{{ question.message }}</h3>
 
-    <h2>ANSWERS:</h2>
+        <p>Submission time: {{ question.submission_time }}, Numbers of views: {{ question.view_number }}</p>
+    <p>Vote's number: {{ question.vote_number }} <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button><button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button> </p>
 
-    <p>
-        <ul>
-        {% for answer in answers %}
-            <li>{{ answer.submission_time }},{{ answer.message }},{{ answer.vote_number}}</li>
-        {% endfor %}
-        </ul>
-    </p>
+    <a href="{{ url_for("add_answer",question_id=question.id) }}">
+        <button type="button" name="add_answer" id="add_answer" >ADD ANSWER</button></a>
+    <a href="{{ url_for("delete_question", question_id = question["id"]) }}">
+        <button type="button" name="delete_question" id="delete_question">DELETE QUESTION</button>
+    </a><br>
 
+
+    <table>
+        <thead><strong>ANSWERS:</strong></thead>
+            <tr>
+                {% for item in answers_headers %}
+                <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+        <tbody>
+            {% for answer in answers %}
+            <tr>
+                <td>{{ answer.vote_number }}</td>
+                <td>{{ answer.message }}</td>
+                <td>{{ answer.submission_time }}</td>
+                <td><button type="submit" name="answer_vote_up" id="answer_vote_up">VOTE UP</button></td>
+                <td><button type="submit" name="answer_vote_down" id="answer_vote_down">VOTE DOWN</button></td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+<a href="{{ url_for("main_page") }}">Back to List of questions</a>
 
 
 </body>
+<footer><small>The most tailored answers for Your question</small></footer>
 </html>
