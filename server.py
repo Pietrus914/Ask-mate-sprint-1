@@ -11,10 +11,10 @@ def main_page():
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
-    question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"),question_id)
+    question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"), question_id)
     answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
-    return render_template("question.html", question = question, answers = answers, answers_headers = answers_headers)
+    return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
 
 
 @app.route("/add-question")
@@ -39,6 +39,11 @@ def edit_question_post(question_id):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
+    questions = connection.read_csv("sample_data/question.csv")
+    data_handler.delete_item_from_items(questions, question_id)
+
+    connection.write_csv("sample_data/question.csv", questions)
+
     return redirect(url_for("main_page"))
 
 

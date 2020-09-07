@@ -16,3 +16,10 @@ def get_answers_for_question(answers,question_id):
             all_answers.append(answer)
 
     return all_answers
+
+
+def delete_item_from_items(items, item_id):
+    for item in items:
+        if item["id"] == item_id:
+            items.remove(item)
+    return items
