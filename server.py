@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, request
+import data_handler, connection
 
 app = Flask(__name__)
 
@@ -10,7 +11,9 @@ def main_page():
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
-    return render_template("question.html")
+    question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"),question_id)
+    answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"),question_id)
+    return render_template("question.html", question = question, answers = answers)
 
 
 @app.route("/add-question")

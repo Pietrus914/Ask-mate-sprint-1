@@ -1,9 +1,9 @@
 import csv
 
 
-def read_csv(file):
+def read_csv(file):  # czy tutaj nie powinno być read_csv() ?
 
-    with open(file, mode="r", newline='') as csv_file:
+    with open(file, mode="r", newline='') as csv_file: # a tutaj nie powinniśmy wpisać na stałe nazwkę pliku?
         csv_reader = csv.DictReader(csv_file)
         result = list(csv_reader)
         '''for row in csv_reader:
