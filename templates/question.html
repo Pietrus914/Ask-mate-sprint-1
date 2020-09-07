@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question</title>
+</head>
+<body>
+    <h1>QUESTION:<br>{{ question.title }}</h1>
+
+    <p>
+        {{ question.message }}
+    </p>
+
+    <h2>ANSWERS:</h2>
+
+    <p>
+        <ul>
+        {% for answer in answers %}
+            <li>{{ answer.submission_time }},{{ answer.message }},{{ answer.vote_number}}</li>
+        {% endfor %}
+        </ul>
+    </p>
+
+
+
+</body>
+</html>
