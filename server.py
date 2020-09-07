@@ -6,7 +6,10 @@ app = Flask(__name__)
 
 @app.route("/list")
 def main_page():
-    return render_template("index.html")
+    headers = ["Title", "Message", "Submission Time", "Views", "Votes"]
+    story_keys = ["title", "message", "submission_time", "view_number", "vote_number"]
+    questions = connection.read_csv("sample_data/question.csv")
+    return render_template("index.html", headers=headers, questions=questions, story_keys=story_keys)
 
 
 @app.route("/question/<question_id>")

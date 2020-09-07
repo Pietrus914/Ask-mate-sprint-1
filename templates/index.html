@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question List</title>
+</head>
+<body>
+    <h1>Question List</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                    <th>
+                        {{ header }}
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+                <tr>
+                    {% for key in story_keys %}
+                        <td>
+                            {% if key == "message" %}
+                                {{ question[key][0:25] }}
+                            {% else %}
+                                {{ question[key] }}
+                            {% endif %}
+
+                        </td>
+                    {% endfor %}
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</body>
+</html>
