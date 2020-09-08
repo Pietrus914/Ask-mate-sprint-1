@@ -31,6 +31,9 @@
 {#            <button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button></a>#}
     </p>
 
+
+
+
     <a href="{{ url_for("add_answer",question_id=question.id) }}">
         <button type="button" name="add_answer" id="add_answer" >ADD ANSWER</button></a>
     <a href="{{ url_for("delete_question", question_id = question["id"]) }}">
@@ -51,8 +54,11 @@
                 <td>{{ answer.vote_number }}</td>
                 <td>{{ answer.message }}</td>
                 <td>{{ answer.submission_time }}</td>
-                <td><button type="submit" name="answer_vote_up" id="answer_vote_up">VOTE UP</button></td>
-                <td><button type="submit" name="answer_vote_down" id="answer_vote_down">VOTE DOWN</button></td>
+                <td>
+                    <form action="{{ url_for("answer_vote_up", answer_id=answer.id, question_id=question["id"]) }}" method="post">
+            <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button>
+            <button type="submit"  id="vote_down" name = "vote_answer" value="vote_down">VOTE DOWN</button>
+        </form></td>
 
             </tr>
             {% endfor %}
