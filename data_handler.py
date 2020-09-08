@@ -5,12 +5,17 @@ from datetime import datetime
 def get_item_by_id(items,id):
     for item in items:
         if item["id"] == id:
-            # '''switch timestamp to date string'''
-            # timestamp = int(item.get("submission_time"))
-            # date_time = datetime.fromtimestamp(timestamp)
             return item
 
     return None
+
+'''prepare a question for displaying: time format'''
+def prepare_question_for_display(question_id):
+    all_questions = connection.read_csv("sample_data/question.csv")
+    question = get_item_by_id(all_questions, question_id)
+    question["submission_time"] = transform_timestamp(question["submission_time"])
+
+    return question
 
 '''function that gets all answers for a given question'''
 def get_answers_for_question(answers,question_id):
@@ -76,19 +81,12 @@ def sorting_questions(questions_list, order_by, order_direction):
 
 
 '''switch timestamp to date string'''
-# def transform_timestamp(item):
-#     timestamp = int(item["submission_time"])
-#     date_time = datetime.fromtimestamp(timestamp)
-#     time_formatted = date_time.strftime('%d-%b-%Y %H:%M:%S')
-#
-#     return time_formatted
-
-'''switch timestamp to date string'''
 def transform_timestamp(timestamp):
     date_time = datetime.fromtimestamp(int(timestamp))
     time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
 
     return time_formatted
+
 
 if __name__ == "__main__":
     s = connection.read_csv("sample_data/question.csv")
