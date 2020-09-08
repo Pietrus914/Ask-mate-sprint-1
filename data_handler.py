@@ -50,3 +50,20 @@ def views_updated(item_id):
             question["view_number"] = int(question["view_number"]) + 1
             break
     connection.write_csv("sample_data/question.csv", question_list)
+
+
+def sorting_questions(questions_list, order_by, order_direction):
+    if questions_list[0][order_by].isdigit():
+        sorted_questions = sorted(questions_list, key=lambda k: int(k[order_by]))
+    else:
+        sorted_questions = sorted(questions_list, key=lambda k: k[order_by])
+    if order_direction == "descending":
+        sorted_questions.reverse()
+    return sorted_questions
+
+
+if __name__ == "__main__":
+    s = connection.read_csv("sample_data/question.csv")
+    print(s)
+    d = sorting_questions(s, "title", "view_number")
+    print(d)
