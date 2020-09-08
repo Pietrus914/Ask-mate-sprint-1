@@ -67,12 +67,20 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
 def question_vote_up(question_id):
-    return redirect(url_for("display_question"))
+    questions = connection.read_csv("sample_data/question.csv")
+    questions = data_handler.add_vote_up(questions, question_id)
+    connection.write_csv("sample_data/question.csv", questions)
+
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_down", methods=["POST"])
 def question_vote_down(question_id):
-    return redirect(url_for("display_question"))
+    questions = connection.read_csv("sample_data/question.csv")
+    questions = data_handler.substract_vote(questions, question_id)
+    connection.write_csv("sample_data/question.csv", questions)
+
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<answer_id>/vote_up", methods=["POST"])
