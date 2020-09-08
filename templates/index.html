@@ -23,7 +23,9 @@
                     {% for key in story_keys %}
                         <td>
                             {% if key == "message" %}
-                                {{ question[key][0:25] }}
+                                {{ question[key][0:50] }}
+                            {% elif key == "title" %}
+                                <a href="{{url_for("display_question", question_id=question["id"]) }}">{{question[key]}}</a>
                             {% else %}
                                 {{ question[key] }}
                             {% endif %}
