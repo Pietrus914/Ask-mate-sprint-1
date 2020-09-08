@@ -6,6 +6,17 @@
 </head>
 <body>
     <h1>Question List</h1>
+    <form action="{{ url_for("main_page") }}" method="post">
+          <p>
+             <label>Sorted By: </label>
+             <select id = "myList">
+               <option value = "1">one</option>
+               <option value = "2">two</option>
+               <option value = "3">three</option>
+               <option value = "4">four</option>
+             </select>
+          </p>
+    </form>
 
     <table border="1">
         <thead>
