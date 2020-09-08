@@ -16,6 +16,7 @@ def main_page():
 def display_question(question_id):
     data_handler.views_updated(question_id)
     question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"), question_id)
+    question["submission_time"] = data_handler.transform_timestamp(question["submission_time"])
     answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
     return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
