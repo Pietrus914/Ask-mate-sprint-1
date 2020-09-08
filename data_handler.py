@@ -1,4 +1,5 @@
 import connection
+from datetime import datetime
 
 '''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
@@ -8,6 +9,14 @@ def get_item_by_id(items,id):
 
     return None
 
+'''prepare a question for displaying: time format'''
+def prepare_question_for_display(question_id):
+    all_questions = connection.read_csv("sample_data/question.csv")
+    question = get_item_by_id(all_questions, question_id)
+    question["submission_time"] = transform_timestamp(question["submission_time"])
+
+    return question
+
 '''function that gets all answers for a given question'''
 def get_answers_for_question(answers,question_id):
     all_answers = []
@@ -16,6 +25,19 @@ def get_answers_for_question(answers,question_id):
             all_answers.append(answer)
 
     return all_answers
+
+'''prepare answers for displaying: time format'''
+def prepare_answers_for_dispaly(question_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    answers = get_answers_for_question(all_answers, question_id)
+    for answer in answers:
+        # czy to nie spowoduje komplikacji przy zapisywaniu do pliku csv?
+        # chyba nie powinno, bo updateować bedziemy tylko te pozycje, które się zmieniają,
+        # a submission_time nie będzie edytowalne. Druga opcja taka, że
+        #  znowu trzeba  będzie użyć datetime, żeby wygenerować timestamp do zapisu do csv
+        answer["submission_time"] = transform_timestamp(answer["submission_time"])
+    return answers
+
 
 '''function that deletes item from list'''
 def delete_item_from_items(items, item_id):
@@ -60,6 +82,14 @@ def sorting_questions(questions_list, order_by, order_direction):
     if order_direction == "descending":
         sorted_questions.reverse()
     return sorted_questions
+
+
+'''switch timestamp to a nice date string'''
+def transform_timestamp(timestamp):
+    date_time = datetime.fromtimestamp(int(timestamp))
+    time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
+
+    return time_formatted
 
 
 if __name__ == "__main__":
