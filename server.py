@@ -14,6 +14,7 @@ def main_page():
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
+    data_handler.views_updated(question_id)
     question = data_handler.get_item_by_id(connection.read_csv("sample_data/question.csv"), question_id)
     answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
