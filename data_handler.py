@@ -1,4 +1,4 @@
-
+import connection
 
 '''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
@@ -41,3 +41,12 @@ def substract_vote(items,item_id):
         if item["id"] == item_id:
             item["vote_number"] = int(item.get("vote_number", 0)) - 1
             return items
+
+
+def views_updated(item_id):
+    question_list = connection.read_csv("sample_data/question.csv")
+    for question in question_list:
+        if question["id"] == item_id:
+            question["view_number"] = int(question["view_number"]) + 1
+            break
+    connection.write_csv("sample_data/question.csv", question_list)
