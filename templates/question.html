@@ -13,10 +13,18 @@
     <p>Vote's number: {{ question.vote_number }}
         <form action="{{ url_for("question_vote_up", question_id=question.id) }}" method="post">
             <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button>
+            <button type="submit" formaction="{{ url_for("question_vote_down",question_id=question.id) }}" id="vote_down" name = "vote_down">VOTE DOWN</button>
         </form>
-        <form action="{{ url_for("question_vote_down", question_id=question.id) }}" method="post">
-            <button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button>
-        </form>
+
+
+{#        <form action="{{ url_for("question_vote_up", question_id=question.id) }}" method="post">#}
+{#            <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button>#}
+{#        </form>#}
+{#        <form action="{{ url_for("question_vote_down", question_id=question.id) }}" method="post">#}
+{#            <button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button>#}
+{#        </form>#}
+
+
 {#        <a href="{{ url_for("question_vote_up", question_id=question.id) }}">#}
 {#            <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button></a>#}
 {#        <a href="{{ url_for("question_vote_down", question_id=question.id) }}">#}

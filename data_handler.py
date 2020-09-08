@@ -31,6 +31,10 @@ def prepare_answers_for_dispaly(question_id):
     all_answers = connection.read_csv("sample_data/answer.csv")
     answers = get_answers_for_question(all_answers, question_id)
     for answer in answers:
+        # czy to nie spowoduje komplikacji przy zapisywaniu do pliku csv?
+        # chyba nie powinno, bo updateować bedziemy tylko te pozycje, które się zmieniają,
+        # a submission_time nie będzie edytowalne. Druga opcja taka, że
+        #  znowu trzeba  będzie użyć datetime, żeby wygenerować timestamp do zapisu do csv
         answer["submission_time"] = transform_timestamp(answer["submission_time"])
     return answers
 
@@ -80,7 +84,7 @@ def sorting_questions(questions_list, order_by, order_direction):
     return sorted_questions
 
 
-'''switch timestamp to date string'''
+'''switch timestamp to a nice date string'''
 def transform_timestamp(timestamp):
     date_time = datetime.fromtimestamp(int(timestamp))
     time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
