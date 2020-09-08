@@ -21,6 +21,15 @@ def get_answers_for_question(answers,question_id):
 
     return all_answers
 
+'''prepare answers for displaying: time format'''
+def prepare_answers_for_dispaly(question_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    answers = get_answers_for_question(all_answers, question_id)
+    for answer in answers:
+        answer["submission_time"] = transform_timestamp(answer["submission_time"])
+    return answers
+
+
 '''function that deletes item from list'''
 def delete_item_from_items(items, item_id):
     for item in items:
