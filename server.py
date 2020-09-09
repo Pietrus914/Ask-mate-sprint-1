@@ -9,8 +9,8 @@ def main_page():
     headers = ["Title", "Message", "Submission Time", "Views", "Votes"]
     story_keys = ["title", "message", "submission_time", "view_number", "vote_number"]
     questions = connection.read_csv("sample_data/question.csv")
-    '''if len(request.args) != 0:
-        data_handler.sorting_questions(questions, request.args.get())'''
+    if len(request.args) != 0:
+        questions = data_handler.sorting_questions(questions, request.args.get("order_by"), request.args.get("order_direction"))
     return render_template("index.html", headers=headers, questions=questions, story_keys=story_keys)
 
 
