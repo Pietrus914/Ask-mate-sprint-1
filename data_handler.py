@@ -1,7 +1,7 @@
 import connection
 from datetime import datetime
 
-'''function that gets an item from list of dictionary, id ->string type'''
+'''function that gets an item from a list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
     for item in items:
         if item["id"] == id:
@@ -39,12 +39,21 @@ def prepare_answers_for_dispaly(question_id):
     return answers
 
 
-'''function that deletes item from list'''
+'''function that deletes a given item from a list of dictionaries'''
 def delete_item_from_items(items, item_id):
     for item in items:
         if item["id"] == item_id:
             items.remove(item)
             return items
+
+'''delete answer for a given question from answers'''
+def delete_answer_from_answers(question_id, answer_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    for answer in all_answers:
+        if answer["question_id"] == question_id and answer["id"] == answer_id:
+            all_answers.remove(answer)
+            return all_answers
+
 
 
 '''function that adds vote up'''
@@ -63,6 +72,18 @@ def substract_vote(items,item_id):
         if item["id"] == item_id:
             item["vote_number"] = int(item.get("vote_number", 0)) - 1
             return items
+
+
+'''upadtes answers votes'''
+def update_votes(items,item_id,post_result):
+    for item in items:
+        if item["id"] == item_id:
+            if post_result["vote_answer"] == "vote_down":
+                item["vote_number"] = int(item.get("vote_number", 0)) - 1
+            elif post_result["vote_answer"] == "vote_up":
+                item["vote_number"] = int(item.get("vote_number", 0)) +1
+            return items
+
 
 
 def views_updated(item_id):

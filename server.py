@@ -64,9 +64,16 @@ def edit_answer_post(answer_id):
     return redirect(url_for("display_question"))
 
 
-@app.route("/answer/<answer_id>/delete")
-def delete_answer(answer_id):
-    return redirect(url_for("display_question"))
+@app.route("/answer/<question_id>/<answer_id>/delete")
+def delete_answer(question_id, answer_id):
+    # all_answers = connection.read_csv("sample_data/answer.csv")
+    # for answer in all_answers:
+    #     if answer["question_id"] == question_id and answer["id"]== answer_id:
+    #         all_answers.remove(answer)
+    answers = data_handler.delete_answer_from_answers(question_id, answer_id)
+    connection.write_csv("sample_data/answer.csv", answers)
+
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<question_id>/vote_up", methods=["POST"])
@@ -88,27 +95,27 @@ def question_vote_down(question_id):
 
 
 @app.route("/answer/<question_id>/<answer_id>/vote_up", methods=["POST"])
-def answer_vote_up(question_id, answer_id):
+def answer_vote(question_id, answer_id):
     post_result = dict(request.form)
     print(post_result)
-    # all_questions = connection.read_csv("sample_data/question.csv")
-    # question = data_handler.get_item_by_id(all_questions, question_id)
+
     answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
-    for answer in answers:
-        if answer["id"] == answer_id:
-            if post_result["vote_answer"] == "vote_down":
-                answer["vote_number"] = int(answer.get("vote_number", 0)) - 1
-            elif post_result["vote_answer"] == "vote_up":
-                answer["vote_number"] = int(answer.get("vote_number", 0)) + 1
+    answers = data_handler.update_votes(answers, answer_id,post_result)
+    # for answer in answers:
+    #     if answer["id"] == answer_id:
+    #         if post_result["vote_answer"] == "vote_down":
+    #             answer["vote_number"] = int(answer.get("vote_number", 0)) - 1
+    #         elif post_result["vote_answer"] == "vote_up":
+    #             answer["vote_number"] = int(answer.get("vote_number", 0)) + 1
 
-            connection.write_csv("sample_data/answer.csv", answers)
+    connection.write_csv("sample_data/answer.csv", answers)
 
-            return redirect(url_for("display_question",question_id=question_id))
+    return redirect(url_for("display_question",question_id=question_id))
 
 
-@app.route("/answer/<answer_id>/vote_down", methods=["POST"])
-def answer_vote_down(answer_id):
-    return redirect(url_for("display_question"))
+# @app.route("/answer/<answer_id>/vote_down", methods=["POST"])
+# def answer_vote_down(answer_id):
+#     return redirect(url_for("display_question"))
 
 
 if __name__ == "__main__":
