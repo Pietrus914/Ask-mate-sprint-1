@@ -14,6 +14,13 @@ def main_page():
     return render_template("index.html", headers=headers, questions=questions, story_keys=story_keys)
 
 
+def display_time(s):
+    return data_handler.transform_timestamp(s)
+
+
+app.jinja_env.globals.update(display_time=display_time)
+
+
 @app.route("/question/<question_id>")
 def display_question(question_id):
     if request.referrer != request.url:
