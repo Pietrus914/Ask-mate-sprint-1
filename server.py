@@ -20,7 +20,7 @@ def display_question(question_id):
     return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
 
 
-@app.route("/add-question")
+@app.route("/add")
 def add_question_get():
     new_question = {
         "id": None,
@@ -33,10 +33,10 @@ def add_question_get():
     return render_template("add_update_question.html", question=new_question)
 
 
-@app.route("/add-question/post", methods=["POST"])
+@app.route("/add/post", methods=["POST"])
 def add_question_post():
     new_question = dict(request.form)
-    new_question["id"] = data_handler.get_new_id()
+    new_question["id"] = data_handler.get_new_id(connection.read_csv("sample_data/question.csv"))
 
     new_question["submission_time"] = data_handler.get_current_data()
 

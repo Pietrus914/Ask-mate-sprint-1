@@ -47,8 +47,8 @@ def substract_vote(items,item_id):
 def get_new_id(questions):
     tmp_id = 0
     for question in questions:
-        if question['id'] > tmp_id:
-            tmp_id = question['id']
+        if int(question['id']) > tmp_id:
+            tmp_id = int(question['id'])
 
     return tmp_id + 1
 
