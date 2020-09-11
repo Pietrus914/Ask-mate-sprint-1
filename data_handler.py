@@ -9,6 +9,14 @@ def get_item_by_id(items,id):
 
     return None
 
+'''prepare a question for displaying: time format'''
+def prepare_question_for_display(question_id):
+    all_questions = connection.read_csv("sample_data/question.csv")
+    question = get_item_by_id(all_questions, question_id)
+    question["submission_time"] = transform_timestamp(question["submission_time"])
+
+    return question
+
 '''function that gets all answers for a given question'''
 def get_answers_for_question(answers,question_id):
     all_answers = []
@@ -18,12 +26,34 @@ def get_answers_for_question(answers,question_id):
 
     return all_answers
 
-'''function that deletes item from list'''
+'''prepare answers for displaying: time format'''
+def prepare_answers_for_dispaly(question_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    answers = get_answers_for_question(all_answers, question_id)
+    for answer in answers:
+        # czy to nie spowoduje komplikacji przy zapisywaniu do pliku csv?
+        # chyba nie powinno, bo updateować bedziemy tylko te pozycje, które się zmieniają,
+        # a submission_time nie będzie edytowalne. Druga opcja taka, że
+        #  znowu trzeba  będzie użyć datetime, żeby wygenerować timestamp do zapisu do csv
+        answer["submission_time"] = transform_timestamp(answer["submission_time"])
+    return answers
+
+
+'''function that deletes a given item from a list of dictionaries'''
 def delete_item_from_items(items, item_id):
     for item in items:
         if item["id"] == item_id:
             items.remove(item)
             return items
+
+'''delete answer for a given question from answers'''
+def delete_answer_from_answers(question_id, answer_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    for answer in all_answers:
+        if answer["question_id"] == question_id and answer["id"] == answer_id:
+            all_answers.remove(answer)
+            return all_answers
+
 
 
 '''function that adds vote up'''
@@ -70,3 +100,48 @@ def update_question(edited_question):
 '''function that returns current data & time'''
 def get_current_data():
     return datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+'''upadtes answers votes'''
+def update_votes(items,item_id,post_result):
+    for item in items:
+        if item["id"] == item_id:
+            if post_result["vote_answer"] == "vote_down":
+                item["vote_number"] = int(item.get("vote_number", 0)) - 1
+            elif post_result["vote_answer"] == "vote_up":
+                item["vote_number"] = int(item.get("vote_number", 0)) +1
+            return items
+
+
+
+def views_updated(item_id):
+    question_list = connection.read_csv("sample_data/question.csv")
+    for question in question_list:
+        if question["id"] == item_id:
+            question["view_number"] = int(question["view_number"]) + 1
+            break
+    connection.write_csv("sample_data/question.csv", question_list)
+
+
+def sorting_questions(questions_list, order_by, order_direction):
+    if questions_list[0][order_by].isdigit():
+        sorted_questions = sorted(questions_list, key=lambda k: int(k[order_by]))
+    else:
+        sorted_questions = sorted(questions_list, key=lambda k: k[order_by])
+    if order_direction == "descending":
+        sorted_questions.reverse()
+    return sorted_questions
+
+
+'''switch timestamp to a nice date string'''
+def transform_timestamp(timestamp):
+    date_time = datetime.fromtimestamp(int(timestamp))
+    time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
+
+    return time_formatted
+
+
+if __name__ == "__main__":
+    s = connection.read_csv("sample_data/question.csv")
+    print(s)
+    d = sorting_questions(s, "title", "view_number")
+    print(d)

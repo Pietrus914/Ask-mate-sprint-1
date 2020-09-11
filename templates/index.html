@@ -10,9 +10,11 @@
     <table border="1">
         <thead>
             <tr>
-                {% for header in headers %}
+                {% for i in range(headers|length) %}
                     <th>
-                        {{ header }}
+                        {{ headers[i] }}
+                        <a href="{{ url_for("main_page", order_by=story_keys[i], order_direction="asc") }}">&#8679</a>
+                        <a href="{{ url_for("main_page", order_by=story_keys[i], order_direction="desc") }}">&#8681</a>
                     </th>
                 {% endfor %}
             </tr>
@@ -23,7 +25,9 @@
                     {% for key in story_keys %}
                         <td>
                             {% if key == "message" %}
-                                {{ question[key][0:25] }}
+                                {{ question[key][0:50] }}
+                            {% elif key == "title" %}
+                                <a href="{{url_for("display_question", question_id=question["id"]) }}">{{question[key]}}</a>
                             {% else %}
                                 {{ question[key] }}
                             {% endif %}
