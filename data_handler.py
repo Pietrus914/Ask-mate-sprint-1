@@ -1,7 +1,7 @@
+import datetime
 import connection
-from datetime import datetime
 
-'''function that gets an item from a list of dictionary, id ->string type'''
+'''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
     for item in items:
         if item["id"] == id:
@@ -73,6 +73,35 @@ def substract_vote(items,item_id):
             item["vote_number"] = int(item.get("vote_number", 0)) - 1
             return items
 
+'''function that finds next number for id'''
+def get_new_id(questions):
+    tmp_id = 0
+    for question in questions:
+        if int(question['id']) > tmp_id:
+            tmp_id = int(question['id'])
+
+    return tmp_id + 1
+
+
+# '''function that adds new question to list of questions'''
+# def add_question(new_question,questions):
+#     # questions = read_csv("sample_data/question.csv")
+#     new_questions_list = questions.append(new_question)
+#     return new_questions_list
+
+
+'''function that updates question'''
+def update_question(edited_question):
+    questions = read_csv("sample_data/question.csv")
+    for question in questions:
+        if question["id"] == edited_question["id"]:
+            question["title"] = edited_question["title"]
+            question["message"] = edited_question["message"]
+    return questions
+
+'''function that returns current data & time'''
+def get_current_data():
+    return datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
 
 '''upadtes answers votes'''
 def update_votes(items,item_id,post_result):

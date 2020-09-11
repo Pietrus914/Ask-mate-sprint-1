@@ -31,23 +31,51 @@ def display_question(question_id):
     return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
 
 
-@app.route("/add-question")
-def add_question():
-    return render_template("add_update_question.html")
+@app.route("/add")
+def add_question_get():
+    new_question = {
+        "id": None,
+        "title": "",
+        "message": "",
+        "submission_time": None,
+        "view_number": 0,
+        "vote_number": 0
+    }
+    return render_template("add_update_question.html", question=new_question)
 
 
-@app.route("/add-question", methods=["POST"])
+@app.route("/add/post", methods=["POST"])
 def add_question_post():
-    return redirect(url_for("display_question"))
+    new_question = dict(request.form)
+    questions = connection.read_csv("sample_data/question.csv")
+
+    new_question["id"] = data_handler.get_new_id(questions)
+    new_question["submission_time"] = data_handler.get_current_data()
+    new_question["view_number"] = 0
+    new_question["vote_number"] = 0
+
+    questions.append(new_question)
+    connection.write_csv("sample_data/question.csv", questions)
+
+    return redirect(url_for("display_question", question_id=new_question["id"]))
 
 
-@app.route("/question/<question_id>/edit")
-def edit_question(question_id):
-    return render_template("add_update_question.html")
+@app.route("/question/<int:question_id>/edit")
+def edit_question_get(question_id):
+    question = data_handler.get_item_by_id(question_id)
+
+    if question is None:
+        return redirect(url_for("display_question"))
+    else:
+        return render_template("add_update_question.html", question=question)
 
 
-@app.route("/question/<question_id>/edit", methods=["POST"])
+@app.route("/question/<int:question_id>/edit/post", methods=["POST"])
 def edit_question_post(question_id):
+    edited_question = dict(request.form)
+    questions = data_handler.update_question(edited_question)
+    connection.write_csv("sample_data/question.csv", questions)
+
     return redirect(url_for("display_question"))
 
 
