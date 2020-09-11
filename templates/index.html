@@ -28,6 +28,8 @@
                                 {{ question[key][0:50] }}
                             {% elif key == "title" %}
                                 <a href="{{url_for("display_question", question_id=question["id"]) }}">{{question[key]}}</a>
+                            {% elif key == "submission_time" %}
+                                {{ display_time(question[key]) }}
                             {% else %}
                                 {{ question[key] }}
                             {% endif %}
@@ -40,5 +42,7 @@
 
         </tbody>
     </table>
+    <br>
+    <a href="{{url_for("add_question") }}"><button type="button">Add Question</button></a>
 </body>
 </html>
