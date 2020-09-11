@@ -1,5 +1,5 @@
 import datetime
-from connection import read_csv
+import connection
 
 '''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
@@ -83,10 +83,12 @@ def get_new_id(questions):
     return tmp_id + 1
 
 
-'''function that adds new question to list of questions'''
-def add_question(new_question):
-    questions = read_csv("sample_data/question.csv")
-    return questions.append(new_question)
+# '''function that adds new question to list of questions'''
+# def add_question(new_question,questions):
+#     # questions = read_csv("sample_data/question.csv")
+#     new_questions_list = questions.append(new_question)
+#     return new_questions_list
+
 
 '''function that updates question'''
 def update_question(edited_question):

@@ -40,14 +40,17 @@ def add_question_get():
 @app.route("/add/post", methods=["POST"])
 def add_question_post():
     new_question = dict(request.form)
-    new_question["id"] = data_handler.get_new_id(connection.read_csv("sample_data/question.csv"))
+    questions = connection.read_csv("sample_data/question.csv")
 
+    new_question["id"] = data_handler.get_new_id(questions)
     new_question["submission_time"] = data_handler.get_current_data()
+    new_question["view_number"] = 0
+    new_question["vote_number"] = 0
 
-    questions = data_handler.add_question(new_question)
+    questions.append(new_question)
     connection.write_csv("sample_data/question.csv", questions)
 
-    return redirect(url_for("display_question"))
+    return redirect(url_for("display_question", question_id=new_question["id"]))
 
 
 @app.route("/question/<int:question_id>/edit")
