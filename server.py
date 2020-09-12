@@ -62,10 +62,11 @@ def add_question_post():
 
 @app.route("/question/<int:question_id>/edit")
 def edit_question_get(question_id):
-    question = data_handler.get_item_by_id(question_id)
+    questions = connection.read_csv("sample_data/question.csv")
+    question = data_handler.get_item_by_id(questions,str(question_id))
 
     if question is None:
-        return redirect(url_for("display_question"))
+        return redirect(url_for("display_question", question_id=question_id))
     else:
         return render_template("add_update_question.html", question=question)
 
@@ -73,10 +74,11 @@ def edit_question_get(question_id):
 @app.route("/question/<int:question_id>/edit/post", methods=["POST"])
 def edit_question_post(question_id):
     edited_question = dict(request.form)
+
     questions = data_handler.update_question(edited_question)
     connection.write_csv("sample_data/question.csv", questions)
 
-    return redirect(url_for("display_question"))
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<question_id>/delete")
