@@ -50,7 +50,7 @@ def add_question_post():
     questions = connection.read_csv("sample_data/question.csv")
 
     new_question["id"] = data_handler.get_new_id(questions)
-    new_question["submission_time"] = data_handler.get_current_data()
+    new_question["submission_time"] = data_handler.get_current_timestamp()
     new_question["view_number"] = 0
     new_question["vote_number"] = 0
 

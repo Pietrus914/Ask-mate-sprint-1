@@ -100,8 +100,9 @@ def update_question(edited_question):
     return questions
 
 '''function that returns current data & time'''
-def get_current_data():
-    return datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+def get_current_timestamp():
+    now = datetime.datetime.now()
+    return int(datetime.datetime.timestamp(now))
 
 '''upadtes answers votes'''
 def update_votes(items,item_id,post_result):
@@ -136,7 +137,7 @@ def sorting_questions(questions_list, order_by, order_direction):
 
 '''switch timestamp to a nice date string'''
 def transform_timestamp(timestamp):
-    date_time = datetime.fromtimestamp(int(timestamp))
+    date_time = datetime.datetime.fromtimestamp(int(timestamp))
     time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
 
     return time_formatted
