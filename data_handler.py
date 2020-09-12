@@ -92,11 +92,13 @@ def get_new_id(questions):
 
 '''function that updates question'''
 def update_question(edited_question):
-    questions = read_csv("sample_data/question.csv")
+    questions = connection.read_csv("sample_data/question.csv")
     for question in questions:
         if question["id"] == edited_question["id"]:
             question["title"] = edited_question["title"]
             question["message"] = edited_question["message"]
+            question["image"] = edited_question["image"]
+
     return questions
 
 '''function that returns current data & time'''
