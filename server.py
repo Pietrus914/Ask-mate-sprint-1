@@ -37,6 +37,7 @@ def add_question_get():
         "id": None,
         "title": "",
         "message": "",
+        "image": "",
         "submission_time": None,
         "view_number": 0,
         "vote_number": 0

@@ -18,18 +18,20 @@
     {% endif %}
 
     {% if question["id"] != None %}
-            <input type="hidden" name="id" id="id" value="{{ question["id"] }}">
+        <input type="hidden" name="id" id="id" value="{{ question["id"] }}">
     {% endif %}
 
         <label for="title">Question Title:</label>
         <input type="text" name="title" id="title" value="{{ question["title"] }}">
         <label for="message">Message:</label>
         <textarea name="message" id="message">{{ question["message"] }} </textarea>
+        <label for="image">IMG:</label>
+        <input type="url" name="image" id="image" placeholder="https://example.com" pattern="https://.*" value="{{ question["image"] }}">
 
-        {% if question["id"] == None %}
-            <input type="submit" value="Add Question">
-        {% else %}
-            <input type="submit" value="Update Question">
-        {% endif %}
+    {% if question["id"] == None %}
+        <input type="submit" value="Add Question">
+    {% else %}
+        <input type="submit" value="Update Question">
+    {% endif %}
 </body>
 </html>
