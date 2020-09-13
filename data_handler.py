@@ -82,7 +82,13 @@ def get_new_id(questions):
 
     return tmp_id + 1
 
+#def get_new_id_answer(answers):
+#    tmp_id = 0
+#    for answer in answers:
+#        if int(answer['id']) > tmp_id:
+#            tmp_id = int(answer['id'])
 
+#    return tmp_id + 1
 # '''function that adds new question to list of questions'''
 # def add_question(new_question,questions):
 #     # questions = read_csv("sample_data/question.csv")
