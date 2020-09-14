@@ -13,7 +13,7 @@ def get_item_by_id(items,id):
 def prepare_question_for_display(question_id):
     all_questions = connection.read_csv("sample_data/question.csv")
     question = get_item_by_id(all_questions, question_id)
-    question["submission_time"] = transform_timestamp(question["submission_time"])
+    # question["submission_time"] = transform_timestamp(question["submission_time"])
 
     return question
 
@@ -30,12 +30,12 @@ def get_answers_for_question(answers,question_id):
 def prepare_answers_for_dispaly(question_id):
     all_answers = connection.read_csv("sample_data/answer.csv")
     answers = get_answers_for_question(all_answers, question_id)
-    for answer in answers:
+    # for answer in answers:
         # czy to nie spowoduje komplikacji przy zapisywaniu do pliku csv?
         # chyba nie powinno, bo updateować bedziemy tylko te pozycje, które się zmieniają,
         # a submission_time nie będzie edytowalne. Druga opcja taka, że
         #  znowu trzeba  będzie użyć datetime, żeby wygenerować timestamp do zapisu do csv
-        answer["submission_time"] = transform_timestamp(answer["submission_time"])
+        # answer["submission_time"] = transform_timestamp(answer["submission_time"])
     return answers
 
 

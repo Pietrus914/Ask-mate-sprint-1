@@ -9,26 +9,13 @@
 
     <h3>{{ question.message }}</h3>
 
-        <p>Submission time: {{ question.submission_time }}, Numbers of views: {{ question.view_number }}</p>
+        <p>Submission time: {{ display_time(question.submission_time) }}, Numbers of views: {{ question.view_number }}</p>
     <p>Vote's number: {{ question.vote_number }}
         <form action="{{ url_for("question_vote_up", question_id=question.id) }}" method="post">
             <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button>
             <button type="submit" formaction="{{ url_for("question_vote_down",question_id=question.id) }}" id="vote_down" name = "vote_down">VOTE DOWN</button>
         </form>
 
-
-{#        <form action="{{ url_for("question_vote_up", question_id=question.id) }}" method="post">#}
-{#            <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button>#}
-{#        </form>#}
-{#        <form action="{{ url_for("question_vote_down", question_id=question.id) }}" method="post">#}
-{#            <button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button>#}
-{#        </form>#}
-
-
-{#        <a href="{{ url_for("question_vote_up", question_id=question.id) }}">#}
-{#            <button type="submit" id="vote_up" name = "vote_up">VOTE UP</button></a>#}
-{#        <a href="{{ url_for("question_vote_down", question_id=question.id) }}">#}
-{#            <button type="submit" id="vote_down" name = "vote_down">VOTE DOWN</button></a>#}
     </p>
 
 
@@ -55,7 +42,7 @@
             <tr>
                 <td>{{ answer.vote_number }}</td>
                 <td>{{ answer.message }}</td>
-                <td>{{ answer.submission_time }}</td>
+                <td>{{ display_time(answer.submission_time) }}</td>
                 <td>
                     <form action="{{ url_for("answer_vote", answer_id=answer.id, question_id=question["id"]) }}" method="post">
             <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button>
