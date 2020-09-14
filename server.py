@@ -92,9 +92,37 @@ def delete_question(question_id):
     return redirect(url_for("main_page"))
 
 
-@app.route("/question/<question_id>/new-answer")
+@app.route("/question/<question_id>/new_answer")
 def add_answer(question_id):
-    return render_template("new_answer.html")
+    question = data_handler.prepare_question_for_display(question_id)
+    new_answer = \
+        {
+            "answer_id": None,
+            "submission_time": None,
+            "view_number": 0,
+            "vote_number": 0,
+            "id": None,
+            "message": "",
+            "image": ""
+        }
+    return render_template("answer.html", question=question, answer=new_answer)
+
+
+@app.route("/question/<int:question_id>/new_answer/post", methods=["POST"])
+def add_answer_post(question_id):
+
+    answers = connection.read_csv("sample_data/answer.csv")
+
+    new_answer = dict(request.form)
+    new_answer["id"] = data_handler.get_new_id(answers)
+    new_answer["submission_time"] = data_handler.get_current_timestamp()
+    new_answer["vote_number"] = 0
+    new_answer["question_id"] = question_id
+
+    answers.append(new_answer)
+    connection.write_csv("sample_data/answer.csv", answers)
+
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
