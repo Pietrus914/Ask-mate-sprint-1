@@ -106,8 +106,8 @@ def delete_question(question_id):
     #     if answer.get("image") != None:
     #         os.remove(answer["image"])
     #         answers.remove(answer)
-    all_answers = data_handler.delete_answer_from_answers(question_id)
-    connection.write_csv("sample_data/answer.csv", all_answers)
+    updated_answers = data_handler.delete_all_answers_for_question(question_id)
+    connection.write_csv("sample_data/answer.csv", updated_answers)
 
     data_handler.delete_item_from_items(questions, question_id)
 

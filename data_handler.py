@@ -48,22 +48,25 @@ def delete_item_from_items(items, item_id):
             return items
 
 '''delete answer for a given question from answers'''
-def delete_answer_from_answers(question_id, answer_id = None):
-    all_answers = connection.read_csv("sample_data/answer.csv")
-    updated_answers = []
-    for answer in all_answers:
-        if answer_id != None:
-            if answer["question_id"] == question_id and answer["id"] == answer_id:
+def delete_answer_from_answers(question_id, answer_id):
+     all_answers = connection.read_csv("sample_data/answer.csv")
+     for answer in all_answers:
+        if answer["question_id"] == question_id and answer["id"] == answer_id:
                 if answer.get("image") != None:
                     os.remove(answer["image"])
                 all_answers.remove(answer)
                 return all_answers
+
+
+def delete_all_answers_for_question(question_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    updated_answers = []
+    for answer in all_answers:
+        if answer["question_id"] == question_id:
+            if answer.get("image") != None:
+                os.remove(answer["image"])
         else:
-            if answer["question_id"] == question_id:
-                if answer.get("image") != None:
-                    os.remove(answer["image"])
-            else:
-                updated_answers.append(answer)
+            updated_answers.append(answer)
 
     return updated_answers
 
