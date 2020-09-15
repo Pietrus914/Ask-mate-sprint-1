@@ -1,7 +1,10 @@
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, url_for, redirect, request, send_from_directory
 import data_handler, connection
+import os
 
 app = Flask(__name__)
+'''do usuniecia'''
+app.config['UPLOAD_PATH'] = 'uploads'
 
 
 @app.route("/list")
@@ -20,6 +23,11 @@ def display_time(s):
 
 app.jinja_env.globals.update(display_time=display_time)
 
+@app.route("/uploads/<filename>")
+def get_img(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
@@ -28,7 +36,8 @@ def display_question(question_id):
     question = data_handler.prepare_question_for_display(question_id)
     answers = data_handler.prepare_answers_for_dispaly(question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
-    return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
+    picture = os.path.split(question["image"])[1]
+    return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers, picture=picture)
 
 
 @app.route("/add")
@@ -88,6 +97,8 @@ def delete_question(question_id):
     data_handler.delete_item_from_items(questions, question_id)
 
     connection.write_csv("sample_data/question.csv", questions)
+
+    data_handler.delete_img(question_id)
 
     return redirect(url_for("main_page"))
 

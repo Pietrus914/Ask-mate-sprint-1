@@ -10,7 +10,12 @@
 
     <h3>{{ question.message }}</h3>
     {% if question.image %}
-        <img src="{{ question.image }}" alt="picture added by user" style="max-width: 25%">
+        {% if 'http' not in question.image %}
+            <img src="{{ url_for('get_img', filename=picture) }}" alt="picture added by user" style="max-width: 25%">
+{#        <img src="/static/{{ question.image }}" alt="picture added by user" style="max-width: 25%"> dla naszych obrazków#}
+        {% else %}
+            <img src="{{ question.image }}" alt="picture added by user" style="max-width: 25%">
+        {% endif %}
     {% endif %}
 
         <p>Submission time: {{ display_time(question.submission_time) }}, Numbers of views: {{ question.view_number }}</p>

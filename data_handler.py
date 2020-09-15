@@ -1,5 +1,6 @@
 import datetime
 import connection
+import os
 
 '''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
@@ -149,6 +150,15 @@ def transform_timestamp(timestamp):
     time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
 
     return time_formatted
+
+
+def delete_img(question_id):   # nie działą
+    file_path = prepare_question_for_display(question_id).get('image')
+    # file_path = os.path.join(app.config['UPLOAD_PATH'], file_path)  jeśli jest znana tylko nazwa pliku
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    else:
+        return  # jak tu zrobić informację (osobny route?) czy raise exept i z server.py przekierowac gdzies?
 
 
 if __name__ == "__main__":
