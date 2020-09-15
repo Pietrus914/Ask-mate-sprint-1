@@ -27,7 +27,11 @@ app.jinja_env.globals.update(display_time=display_time)
 def get_img(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
 
+def get_filename(path):
+    file_name = os.path.split(path)[1]
+    return file_name
 
+app.jinja_env.globals.update(get_filename=get_filename)
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
@@ -37,6 +41,7 @@ def display_question(question_id):
     answers = data_handler.prepare_answers_for_dispaly(question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
     picture = os.path.split(question["image"])[1]
+
     return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers, picture=picture)
 
 

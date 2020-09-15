@@ -52,12 +52,12 @@
                 <td>{{ answer.vote_number }}</td>
                 <td>{{ answer.message }}<br>
                     {% if answer.image %}
-                        <img src="{{ answer.image }}" alt="picture added by user" style="max-width: 25%"></td>
+                        <img src="{{ url_for("get_img",filename=get_filename(answer.image)) }}" alt="picture added by user" style="max-width: 100%"></td>
                     {% endif %}
                 <td>{{ display_time(answer.submission_time) }}</td>
                 <td>
                     <form action="{{ url_for("answer_vote", answer_id=answer.id, question_id=question["id"]) }}" method="post">
-            <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button>
+            <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button><br><br>
             <button type="submit"  id="vote_down" name = "vote_answer" value="vote_down">VOTE DOWN</button>
         </form></td>
                 <td>
