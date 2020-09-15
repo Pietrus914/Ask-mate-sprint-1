@@ -28,7 +28,7 @@ def get_answers_for_question(answers,question_id):
     return all_answers
 
 '''prepare answers for displaying: time format'''
-def prepare_answers_for_dispaly(question_id):
+def prepare_answers_for_display(question_id):
     all_answers = connection.read_csv("sample_data/answer.csv")
     answers = get_answers_for_question(all_answers, question_id)
     # for answer in answers:
@@ -48,12 +48,24 @@ def delete_item_from_items(items, item_id):
             return items
 
 '''delete answer for a given question from answers'''
-def delete_answer_from_answers(question_id, answer_id):
+def delete_answer_from_answers(question_id, answer_id = None):
     all_answers = connection.read_csv("sample_data/answer.csv")
+    updated_answers = []
     for answer in all_answers:
-        if answer["question_id"] == question_id and answer["id"] == answer_id:
-            all_answers.remove(answer)
-            return all_answers
+        if answer_id != None:
+            if answer["question_id"] == question_id and answer["id"] == answer_id:
+                if answer.get("image") != None:
+                    os.remove(answer["image"])
+                all_answers.remove(answer)
+                return all_answers
+        else:
+            if answer["question_id"] == question_id:
+                if answer.get("image") != None:
+                    os.remove(answer["image"])
+            else:
+                updated_answers.append(answer)
+
+    return updated_answers
 
 
 
@@ -152,11 +164,12 @@ def transform_timestamp(timestamp):
     return time_formatted
 
 
-def delete_img(question_id):   # nie działą
-    file_path = prepare_question_for_display(question_id).get('image')
+def delete_img(item_id):   # nie działą
+    item = prepare_question_for_display(item_id)
+    path = item.get('image')
     # file_path = os.path.join(app.config['UPLOAD_PATH'], file_path)  jeśli jest znana tylko nazwa pliku
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    if os.path.exists(path):
+        os.remove(path)
     else:
         return  # jak tu zrobić informację (osobny route?) czy raise exept i z server.py przekierowac gdzies?
 

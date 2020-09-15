@@ -11,10 +11,10 @@
     <h3>{{ question.message }}</h3>
     {% if question.image %}
         {% if 'http' not in question.image %}
-            <img src="{{ url_for('get_img', filename=picture) }}" alt="picture added by user" style="max-width: 25%">
+            <img src="{{ url_for('get_img', filename=get_filename(question.image)) }}" alt="picture added by user" style="max-width: 25%">
 {#        <img src="/static/{{ question.image }}" alt="picture added by user" style="max-width: 25%"> dla naszych obrazków#}
         {% else %}
-            <img src="{{ question.image }}" alt="picture added by user" style="max-width: 25%">
+            <img src="{{ question.image }}" alt="picture added by user" style="max-height: 25vw">
         {% endif %}
     {% endif %}
 

@@ -38,11 +38,11 @@ def display_question(question_id):
     if request.referrer != request.url:
         data_handler.views_updated(question_id)
     question = data_handler.prepare_question_for_display(question_id)
-    answers = data_handler.prepare_answers_for_dispaly(question_id)
+    answers = data_handler.prepare_answers_for_display(question_id)
     answers_headers = ["Votes' number", "Answer", "Submission time"]
-    picture = os.path.split(question["image"])[1]
+    # picture = os.path.split(question["image"])[1]
 
-    return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers, picture=picture)
+    return render_template("question.html", question=question, answers=answers, answers_headers=answers_headers)
 
 
 @app.route("/add")
@@ -99,11 +99,21 @@ def edit_question_post(question_id):
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     questions = connection.read_csv("sample_data/question.csv")
+    data_handler.delete_img(question_id)
+
+    # answers = data_handler.get_answers_for_question(data_handler.prepare_answers_for_display(question_id),question_id )
+    # for answer in answers:
+    #     if answer.get("image") != None:
+    #         os.remove(answer["image"])
+    #         answers.remove(answer)
+    all_answers = data_handler.delete_answer_from_answers(question_id)
+    connection.write_csv("sample_data/answer.csv", all_answers)
+
     data_handler.delete_item_from_items(questions, question_id)
 
     connection.write_csv("sample_data/question.csv", questions)
 
-    data_handler.delete_img(question_id)
+
 
     return redirect(url_for("main_page"))
 
