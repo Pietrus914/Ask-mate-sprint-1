@@ -53,7 +53,8 @@ def delete_answer_from_answers(question_id, answer_id):
      for answer in all_answers:
         if answer["question_id"] == question_id and answer["id"] == answer_id:
                 if answer.get("image") != None:
-                    os.remove(answer["image"])
+                    if os.path.exists(answer["image"]):
+                        os.remove(answer["image"])
                 all_answers.remove(answer)
                 return all_answers
 
@@ -64,7 +65,8 @@ def delete_all_answers_for_question(question_id):
     for answer in all_answers:
         if answer["question_id"] == question_id:
             if answer.get("image") != None:
-                os.remove(answer["image"])
+                if os.path.exists(answer["image"]):
+                    os.remove(answer["image"])
         else:
             updated_answers.append(answer)
 
