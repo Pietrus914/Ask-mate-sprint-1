@@ -1,5 +1,6 @@
 import datetime
 import connection
+import os
 
 '''function that gets an item from list of dictionary, id ->string type'''
 def get_item_by_id(items,id):
@@ -27,7 +28,7 @@ def get_answers_for_question(answers,question_id):
     return all_answers
 
 '''prepare answers for displaying: time format'''
-def prepare_answers_for_dispaly(question_id):
+def prepare_answers_for_display(question_id):
     all_answers = connection.read_csv("sample_data/answer.csv")
     answers = get_answers_for_question(all_answers, question_id)
     # for answer in answers:
@@ -48,11 +49,26 @@ def delete_item_from_items(items, item_id):
 
 '''delete answer for a given question from answers'''
 def delete_answer_from_answers(question_id, answer_id):
-    all_answers = connection.read_csv("sample_data/answer.csv")
-    for answer in all_answers:
+     all_answers = connection.read_csv("sample_data/answer.csv")
+     for answer in all_answers:
         if answer["question_id"] == question_id and answer["id"] == answer_id:
-            all_answers.remove(answer)
-            return all_answers
+                if answer.get("image") != None:
+                    os.remove(answer["image"])
+                all_answers.remove(answer)
+                return all_answers
+
+
+def delete_all_answers_for_question(question_id):
+    all_answers = connection.read_csv("sample_data/answer.csv")
+    updated_answers = []
+    for answer in all_answers:
+        if answer["question_id"] == question_id:
+            if answer.get("image") != None:
+                os.remove(answer["image"])
+        else:
+            updated_answers.append(answer)
+
+    return updated_answers
 
 
 
@@ -149,6 +165,16 @@ def transform_timestamp(timestamp):
     time_formatted = date_time.strftime('%d-%b-%Y (%H:%M:%S)')
 
     return time_formatted
+
+
+def delete_img(item_id):   # nie działą
+    item = prepare_question_for_display(item_id)
+    path = item.get('image')
+    # file_path = os.path.join(app.config['UPLOAD_PATH'], file_path)  jeśli jest znana tylko nazwa pliku
+    if os.path.exists(path):
+        os.remove(path)
+    else:
+        return  # jak tu zrobić informację (osobny route?) czy raise exept i z server.py przekierowac gdzies?
 
 
 if __name__ == "__main__":

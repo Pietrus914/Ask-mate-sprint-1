@@ -10,7 +10,12 @@
 
     <h3>{{ question.message }}</h3>
     {% if question.image %}
-        <img src="{{ question.image }}" alt="picture added by user" style="max-width: 25%">
+        {% if 'http' not in question.image %}
+            <img src="{{ url_for('get_img', filename=get_filename(question.image)) }}" alt="picture added by user" style="max-width: 25%">
+{#        <img src="/static/{{ question.image }}" alt="picture added by user" style="max-width: 25%"> dla naszych obrazków#}
+        {% else %}
+            <img src="{{ question.image }}" alt="picture added by user" style="max-height: 25vw">
+        {% endif %}
     {% endif %}
 
         <p>Submission time: {{ display_time(question.submission_time) }}, Numbers of views: {{ question.view_number }}</p>
@@ -47,12 +52,12 @@
                 <td>{{ answer.vote_number }}</td>
                 <td>{{ answer.message }}<br>
                     {% if answer.image %}
-                        <img src="{{ answer.image }}" alt="picture added by user" style="max-width: 25%"></td>
+                        <img src="{{ url_for("get_img",filename=get_filename(answer.image)) }}" alt="picture added by user" style="max-width: 100%"></td>
                     {% endif %}
                 <td>{{ display_time(answer.submission_time) }}</td>
                 <td>
                     <form action="{{ url_for("answer_vote", answer_id=answer.id, question_id=question["id"]) }}" method="post">
-            <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button>
+            <button type="submit" id="vote_up" name = "vote_answer" value="vote_up">VOTE UP</button><br><br>
             <button type="submit"  id="vote_down" name = "vote_answer" value="vote_down">VOTE DOWN</button>
         </form></td>
                 <td>
