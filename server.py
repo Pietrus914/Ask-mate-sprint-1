@@ -3,8 +3,8 @@ import data_handler, connection
 import os
 
 app = Flask(__name__)
-'''do usuniecia'''
 app.config['UPLOAD_PATH'] = 'uploads'
+
 
 
 @app.route("/list")
@@ -119,9 +119,17 @@ def add_answer(question_id):
     return render_template("answer.html", question=question, answer=new_answer)
 
 
+@app.route("/question/<int:question_id>/new_answer/img", methods=["POST"])
+def add_img_to_answer(question_id):
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
+
+    return redirect(url_for("add_answer", question_id=question_id, uploaded_file=uploaded_file))
+
+
 @app.route("/question/<int:question_id>/new_answer/post", methods=["POST"])
 def add_answer_post(question_id):
-
     answers = connection.read_csv("sample_data/answer.csv")
 
     new_answer = dict(request.form)
@@ -134,6 +142,7 @@ def add_answer_post(question_id):
     connection.write_csv("sample_data/answer.csv", answers)
 
     return redirect(url_for("display_question", question_id=question_id))
+
 
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
