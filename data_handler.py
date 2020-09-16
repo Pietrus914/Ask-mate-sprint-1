@@ -155,7 +155,7 @@ def sorting_questions(questions_list, order_by, order_direction):
     if questions_list[0][order_by].isdigit():
         sorted_questions = sorted(questions_list, key=lambda k: int(k[order_by]))
     else:
-        sorted_questions = sorted(questions_list, key=lambda k: k[order_by])
+        sorted_questions = sorted(questions_list, key=lambda k: k[order_by].lower(), )
     if order_direction == "desc":
         sorted_questions.reverse()
     return sorted_questions
