@@ -52,7 +52,11 @@
                 <td>{{ answer.vote_number }}</td>
                 <td>{{ answer.message }}<br>
                     {% if answer.image %}
+                        {% if 'http' not in answer.image %}
                         <img src="{{ url_for("get_img",filename=get_filename(answer.image)) }}" alt="picture added by user" style="max-width: 100%"></td>
+                        {% else %}
+                        <img src="{{ answer.image }}" alt="picture added by user" style="max-width: 100%"></td>
+                        {% endif %}
                     {% endif %}
                 <td>{{ display_time(answer.submission_time) }}</td>
                 <td>
