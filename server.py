@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'uploads'
-
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024  # maksymalna wielkosc uploadowanego obrazu
 
 
 @app.route("/list")
@@ -13,7 +13,8 @@ def main_page():
     story_keys = ["title", "message", "submission_time", "view_number", "vote_number"]
     questions = connection.read_csv("sample_data/question.csv")
     if len(request.args) != 0:
-        questions = data_handler.sorting_questions(questions, request.args.get("order_by"), request.args.get("order_direction"))
+        questions = data_handler.sorting_questions(questions, request.args.get("order_by"),
+                                                   request.args.get("order_direction"))
     return render_template("index.html", headers=headers, questions=questions, story_keys=story_keys)
 
 
@@ -23,15 +24,19 @@ def display_time(s):
 
 app.jinja_env.globals.update(display_time=display_time)
 
+
 @app.route("/uploads/<filename>")
 def get_img(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
 
 def get_filename(path):
     file_name = os.path.split(path)[1]
     return file_name
 
+
 app.jinja_env.globals.update(get_filename=get_filename)
+
 
 @app.route("/question/<question_id>")
 def display_question(question_id):
@@ -78,7 +83,7 @@ def add_question_post():
 @app.route("/question/<int:question_id>/edit")
 def edit_question_get(question_id):
     questions = connection.read_csv("sample_data/question.csv")
-    question = data_handler.get_item_by_id(questions,str(question_id))
+    question = data_handler.get_item_by_id(questions, str(question_id))
 
     if question is None:
         return redirect(url_for("display_question", question_id=question_id))
@@ -113,8 +118,6 @@ def delete_question(question_id):
 
     connection.write_csv("sample_data/question.csv", questions)
 
-
-
     return redirect(url_for("main_page"))
 
 
@@ -134,13 +137,13 @@ def add_answer(question_id):
     return render_template("answer.html", question=question, answer=new_answer)
 
 
-@app.route("/question/<int:question_id>/new_answer/img", methods=["POST"])
+'''@app.route("/question/<int:question_id>/new_answer/img", methods=["POST"])
 def add_img_to_answer(question_id):
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
         uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
 
-    return redirect(url_for("add_answer", question_id=question_id, uploaded_file=uploaded_file))
+    return redirect(url_for("add_answer", question_id=question_id, uploaded_file=uploaded_file))'''
 
 
 @app.route("/question/<int:question_id>/new_answer/post", methods=["POST"])
@@ -153,11 +156,15 @@ def add_answer_post(question_id):
     new_answer["vote_number"] = 0
     new_answer["question_id"] = question_id
 
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
+        new_answer["image"] = os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename)
+
     answers.append(new_answer)
     connection.write_csv("sample_data/answer.csv", answers)
 
     return redirect(url_for("display_question", question_id=question_id))
-
 
 
 @app.route("/question/<question_id>/new-answer", methods=["POST"])
@@ -201,7 +208,7 @@ def answer_vote(question_id, answer_id):
     print(post_result)
 
     answers = data_handler.get_answers_for_question(connection.read_csv("sample_data/answer.csv"), question_id)
-    answers = data_handler.update_votes(answers, answer_id,post_result)
+    answers = data_handler.update_votes(answers, answer_id, post_result)
     # for answer in answers:
     #     if answer["id"] == answer_id:
     #         if post_result["vote_answer"] == "vote_down":
@@ -211,7 +218,7 @@ def answer_vote(question_id, answer_id):
 
     connection.write_csv("sample_data/answer.csv", answers)
 
-    return redirect(url_for("display_question",question_id=question_id))
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 # @app.route("/answer/<answer_id>/vote_down", methods=["POST"])

@@ -10,18 +10,17 @@
         <p><b>QUESTION:</b> {{ question.title }}</p>
         <p>{{ question.message }}</p>
 
-    <h3>Add your image</h3>
-        <form method="POST" action="{{ url_for("add_img_to_answer", question_id=question['id']) }}" enctype="multipart/form-data">
-            <p><input type="file" name="file" accept=".jpg,.png"></p>
-            <input type="submit" value="Save image">
-        </form>
-
     <h3>Add new answer</h3>
-        <form action="{{ url_for("add_answer_post", question_id=question['id']) }}" method="post">
+        <form method="POST" action="{{ url_for("add_answer_post", question_id=question['id']) }}" enctype="multipart/form-data">
             <label for="message">Answer:</label>
             <textarea name="message" id="message">{{ answer["message"] }} </textarea>
-        <input type="submit" value="submit">
-    </form>
-
+            <p>add an image from disk...or paste the link to the image</p>
+            <p><input type="file" name="file" accept=".jpg,.png"></p>
+            <label for="image">IMG:</label>
+            <input type="url" name="image" id="image" placeholder="https://example.com" pattern="https://.*" value="{{ question["image"] }}">
+            <br>
+            <br>
+            <input type="submit" value="Save answer">
+        </form>
 </body>
 </html>
