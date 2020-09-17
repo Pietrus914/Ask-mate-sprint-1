@@ -79,6 +79,11 @@ def add_question_post():
     new_question["view_number"] = 0
     new_question["vote_number"] = 0
 
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
+        new_question["image"] = os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename)
+    
     questions.append(new_question)
     connection.write_csv("sample_data/question.csv", questions)
 
@@ -99,6 +104,11 @@ def edit_question_get(question_id):
 @app.route("/question/<int:question_id>/edit/post", methods=["POST"])
 def edit_question_post(question_id):
     edited_question = dict(request.form)
+
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename))
+        edited_question["image"] = os.path.join(app.config['UPLOAD_PATH'], uploaded_file.filename)
 
     questions = data_handler.update_question(edited_question)
     connection.write_csv("sample_data/question.csv", questions)
