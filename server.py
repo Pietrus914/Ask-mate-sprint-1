@@ -7,15 +7,20 @@ app.config['UPLOAD_PATH'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024  # maksymalna wielkosc uploadowanego obrazu
 
 
-@app.route("/list")
+@app.route("/")
 def main_page():
+    return render_template("index.html")
+
+
+@app.route("/list")
+def question_page():
     headers = ["Title", "Message", "Submission Time", "Views", "Votes"]
     story_keys = ["title", "message", "submission_time", "view_number", "vote_number"]
     questions = connection.read_csv("sample_data/question.csv")
     if len(request.args) != 0:
         questions = data_handler.sorting_questions(questions, request.args.get("order_by"),
                                                    request.args.get("order_direction"))
-    return render_template("index.html", headers=headers, questions=questions, story_keys=story_keys)
+    return render_template("question_list.html", headers=headers, questions=questions, story_keys=story_keys)
 
 
 def display_time(s):
