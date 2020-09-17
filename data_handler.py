@@ -10,6 +10,7 @@ def get_item_by_id(items,id):
 
     return None
 
+
 '''prepare a question for displaying: time format'''
 def prepare_question_for_display(question_id):
     all_questions = connection.read_csv("sample_data/question.csv")
@@ -17,6 +18,7 @@ def prepare_question_for_display(question_id):
     # question["submission_time"] = transform_timestamp(question["submission_time"])
 
     return question
+
 
 '''function that gets all answers for a given question'''
 def get_answers_for_question(answers,question_id):
@@ -26,6 +28,7 @@ def get_answers_for_question(answers,question_id):
             all_answers.append(answer)
 
     return all_answers
+
 
 '''prepare answers for displaying: time format'''
 def prepare_answers_for_display(question_id):
@@ -46,6 +49,7 @@ def delete_item_from_items(items, item_id):
         if item["id"] == item_id:
             items.remove(item)
             return items
+
 
 '''delete answer for a given question from answers'''
 def delete_answer_from_answers(question_id, answer_id):
@@ -73,7 +77,6 @@ def delete_all_answers_for_question(question_id):
     return updated_answers
 
 
-
 '''function that adds vote up'''
 def add_vote_up(items,item_id,down=None):
     for item in items:
@@ -84,12 +87,14 @@ def add_vote_up(items,item_id,down=None):
             item["vote_number"] = int(item.get("vote_number", 0))+1
             return items
 
+
 '''function that substract vote'''
 def substract_vote(items,item_id):
     for item in items:
         if item["id"] == item_id:
             item["vote_number"] = int(item.get("vote_number", 0)) - 1
             return items
+
 
 '''function that finds next number for id'''
 def get_new_id(questions):
@@ -125,10 +130,12 @@ def update_question(edited_question):
 
     return questions
 
+
 '''function that returns current data & time'''
 def get_current_timestamp():
     now = datetime.datetime.now()
     return int(datetime.datetime.timestamp(now))
+
 
 '''upadtes answers votes'''
 def update_votes(items,item_id,post_result):
@@ -139,7 +146,6 @@ def update_votes(items,item_id,post_result):
             elif post_result["vote_answer"] == "vote_up":
                 item["vote_number"] = int(item.get("vote_number", 0)) +1
             return items
-
 
 
 def views_updated(item_id):
