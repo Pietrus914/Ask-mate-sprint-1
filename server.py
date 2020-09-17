@@ -123,7 +123,7 @@ def delete_question(question_id):
 
     connection.write_csv("sample_data/question.csv", questions)
 
-    return redirect(url_for("main_page"))
+    return redirect(url_for("question_page"))
 
 
 @app.route("/question/<question_id>/new_answer")
