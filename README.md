@@ -1,3 +1,16 @@
+Technology:
+- Python
+- Flask
+- HTML/CSS
+- Jinja
+
+Gropu project (4 people)
+
+My tasks:
+- answer page with CRUD
+- adding image
+
+
 # AskMate (sprint 1)
 
 ## Story
